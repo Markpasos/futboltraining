@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planificador de Entrenamientos de Fútbol</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        
+        .welcome-screen {
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #219653;
+        }
+        
+        .btn-secondary {
+            background-color: #3498db;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .editor-screen {
+            display: none;
+        }
+        
+        .field-container {
+            position: relative;
+            width: 100%;
+            height: 70vh;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNTAwIj48ZGVmcz48cGF0dGVybiBpZD0iZ3Jhc3MiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCI+PHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjMzhjNzU5Ii8+PHBhdGggZD0iTTAgMEwxMCAxME0xMCAwTDAgMTAiIHN0cm9rZT0iIzQyZDg2MCIgc3Ryb2tlLXdpZHRoPSIwLjUiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iNTAwIiBmaWxsPSJ1cmwoI2dyYXNzKSIvPjxyZWN0IHg9IjQwIiB5PSI0MCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSI0MjAiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIvPjxjaXJjbGUgY3g9IjQwMCIgY3k9IjI1MCIgcj0iNjAiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIvPjxsaW5lIHgxPSI0MDAiIHkxPSI0MCIgeDI9IjQwMCIgeTI9IjQ2MCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIzIi8+PHJlY3QgeD0iNDAiIHk9IjE3NSIgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxNTAiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIvPjxyZWN0IHg9IjY2MCIgeT0iMTc1IiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjE1MCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSJub25lIi8+PHJlY3QgeD0iNDAiIHk9IjIwMCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjEwMCIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSJub25lIi8+PHJlY3QgeD0iNzIwIiB5PSIyMDAiIHdpZHRoPSI0MCIgaGVpZ2h0PSIxMDAiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIvPjxjaXJjbGUgY3g9IjExMCIgY3k9IjI1MCIgcj0iMyIgZmlsbD0id2hpdGUiLz48Y2lyY2xlIGN4PSI2OTAiIGN5PSIyNTAiIHI9IjMiIGZpbGw9IndoaXRlIi8+PC9zdmc+');
+            background-size: cover;
+            background-position: center;
+            border: 3px solid #2c3e50;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .tools-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tool {
+            width: 50px;
+            height: 50px;
+            cursor: grab;
+            user-select: none;
+        }
+        
+        .element {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            cursor: move;
+            user-select: none;
+            z-index: 10;
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .sequence-panel {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sequence-tabs {
+            display: flex;
+            margin-bottom: 10px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+        
+        .sequence-tab {
+            padding: 8px 15px;
+            background-color: #ecf0f1;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+        
+        .sequence-tab.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #2980b9;
+        }
+        .sequence-log {
+        margin-top: 15px;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        max-height: 150px;
+        overflow-y: auto;
+        font-size: 0.9em;
+        }
+
+        .log-entry {
+            padding: 5px;
+            margin: 3px 0;
+            background-color: #e9ecef;
+            border-radius: 3px;
+        }
+
+        .current-sequence {
+            background-color: #cfe2ff;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+            
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 80%;
+        }
+        
+        .modal h2 {
+            margin-bottom: 15px;
+        }
+        
+        .saved-activities {
+            text-align: left;
+            margin: 15px 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .activity-item {
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        
+        .activity-item:hover {
+            background-color: #f5f5f5;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-screen" id="welcomeScreen">
+            <h1>Planificador de Entrenamientos de Fútbol</h1>
+            <p>Crea y guarda tus rutinas de entrenamiento de forma visual</p>
+            <button class="btn" id="btnNewActivity">Comenzar Actividad</button>
+            <button class="btn btn-secondary" id="btnLoadActivity">Cargar Actividad Anterior</button>
+        </div>
+        
+        <div class="editor-screen" id="editorScreen">
+            <h1>Editor de Actividades</h1>
+            
+            <div class="tools-container">
+                <img src="C:\Users\Emanuel\OneDrive\Desktop\App clases de futbol\pelota.png" class="tool" data-type="ball" alt="Pelota">
+                <img src="C:\Users\Emanuel\OneDrive\Desktop\App clases de futbol\cono.png" class="tool" data-type="cone" alt="Cono">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCA1MCI+PGNpcmNsZSBjeD0iMjUiIGN5PSIxNSIgcj0iMTAiIGZpbGw9IiMzNDk4ZGIiLz48cGF0aCBkPSJNMjUgMjVjLTcuNSAwLTE1IDMtMTUgOHYxMmgzMFYzM2MwLTUtNy41LTgtMTUtOHoiIGZpbGw9IiMzNDk4ZGIiLz48L3N2Zz4=" class="tool" data-type="player" alt="Jugador">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCA1MCI+PGNpcmNsZSBjeD0iMjUiIGN5PSIxNSIgcj0iMTAiIGZpbGw9IiNlNzRjM2MiLz48cGF0aCBkPSJNMjUgMjVjLTcuNSAwLTE1IDMtMTUgOHYxMmgzMFYzM2MwLTUtNy41LTgtMTUtOHoiIGZpbGw9IiNlNzRjM2MiLz48L3N2Zz4=" class="tool" data-type="player2" alt="Jugador 2">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCA1MCI+PHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIGZpbGw9IiMyN2FlNjAiLz48L3N2Zz4=" class="tool" data-type="marker" alt="Marcador">
+            </div>
+            
+            <div class="field-container" id="fieldContainer"></div>
+            
+            <div class="controls">
+                <button class="btn" id="btnAddSequence">Nueva Secuencia</button>
+                <button class="btn btn-secondary" id="btnPlaySequence">Reproducir Secuencias</button>
+                <button class="btn" id="btnSaveActivity">Guardar Actividad</button>
+                <button class="btn btn-danger" id="btnBackToMenu">Volver al Menú</button>
+                <button class="btn btn-danger" id="btnDeleteSequence">Eliminar Secuencia</button>
+            </div>
+            
+            <div class="sequence-panel">
+                <h3>Secuencias</h3>
+                <div class="sequence-tabs" id="sequenceTabs">
+                    <div class="sequence-tab active" data-sequence="1">Secuencia 1</div>
+                </div>
+                <div class="sequence-log" id="sequenceLog">
+                    <div class="log-entry current-sequence">Secuencia 1: Edición actual</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para guardar actividad -->
+    <div class="modal" id="saveModal">
+        <div class="modal-content">
+            <h2>Guardar Actividad</h2>
+            <input type="text" id="activityName" placeholder="Nombre de la actividad">
+            <div class="controls">
+                <button class="btn" id="btnConfirmSave">Guardar</button>
+                <button class="btn btn-danger" id="btnCancelSave">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para cargar actividad -->
+    <div class="modal" id="loadModal">
+        <div class="modal-content">
+            <h2>Cargar Actividad</h2>
+            <div class="saved-activities" id="savedActivitiesList">
+                <!-- Las actividades guardadas se cargarán aquí -->
+            </div>
+            <div class="controls">
+                <button class="btn btn-danger" id="btnCancelLoad">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Variables globales
+        let currentSequence = 1;
+        let sequences = {
+            1: { elements: {} }
+        };
+        let elements = [];
+        let elementCounter = 0;
+        let isDragging = false;
+        let selectedElement = null;
+        let selectedElementId = null;
+        let offsetX, offsetY;
+        let isAnimating = false;
+        
+        // DOM Elements
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const editorScreen = document.getElementById('editorScreen');
+        const fieldContainer = document.getElementById('fieldContainer');
+        const sequenceTabs = document.getElementById('sequenceTabs');
+        const saveModal = document.getElementById('saveModal');
+        const loadModal = document.getElementById('loadModal');
+        const savedActivitiesList = document.getElementById('savedActivitiesList');
+        
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            // Eventos para pantalla de bienvenida
+            document.getElementById('btnNewActivity').addEventListener('click', startNewActivity);
+            document.getElementById('btnLoadActivity').addEventListener('click', showLoadModal);
+            document.getElementById('btnDeleteSequence').addEventListener('click', deleteSequence);
+            
+            // Eventos para editor
+            document.getElementById('btnAddSequence').addEventListener('click', addSequence);
+            document.getElementById('btnPlaySequence').addEventListener('click', playAllSequences);
+            document.getElementById('btnSaveActivity').addEventListener('click', showSaveModal);
+            document.getElementById('btnBackToMenu').addEventListener('click', backToMenu);
+            
+            // Eventos para modales
+            document.getElementById('btnConfirmSave').addEventListener('click', saveActivity);
+            document.getElementById('btnCancelSave').addEventListener('click', () => saveModal.style.display = 'none');
+            document.getElementById('btnCancelLoad').addEventListener('click', () => loadModal.style.display = 'none');
+            
+            // Eventos para herramientas
+            document.querySelectorAll('.tool').forEach(tool => {
+                tool.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    createDraggableElement(e.target.dataset.type);
+                });
+            });
+            
+            // Configurar eventos de arrastre para el campo
+            setupFieldDragEvents();
+        });
+        
+        // Función para iniciar una nueva actividad
+        function startNewActivity() {
+            welcomeScreen.style.display = 'none';
+            editorScreen.style.display = 'block';
+            resetEditor();
+        }
+        
+        // Función para mostrar modal de carga
+        function showLoadModal() {
+            loadSavedActivities();
+            loadModal.style.display = 'flex';
+        }
+        
+        // Función para cargar actividades guardadas
+        function loadSavedActivities() {
+            savedActivitiesList.innerHTML = '';
+            
+            try {
+                const savedActivities = JSON.parse(localStorage.getItem('soccerActivities')) || {};
+                
+                if (Object.keys(savedActivities).length === 0) {
+                    savedActivitiesList.innerHTML = '<p>No hay actividades guardadas.</p>';
+                    return;
+                }
+                
+                for (const [name, activity] of Object.entries(savedActivities)) {
+                    const activityItem = document.createElement('div');
+                    activityItem.className = 'activity-item';
+                    activityItem.textContent = name;
+                    activityItem.addEventListener('click', () => loadActivity(name, activity));
+                    savedActivitiesList.appendChild(activityItem);
+                }
+            } catch (error) {
+                console.error('Error al cargar actividades:', error);
+                savedActivitiesList.innerHTML = '<p>Error al cargar actividades guardadas.</p>';
+            }
+        }
+        
+        // Función para cargar una actividad
+        function loadActivity(name, activity) {
+            resetEditor();
+            
+            // Cargar elementos
+            activity.elements.forEach(el => {
+                const element = createDraggableElement(el.type, el.id);
+                element.style.left = el.x + 'px';
+                element.style.top = el.y + 'px';
+            });
+            
+            // Cargar secuencias
+            sequences = activity.sequences;
+            currentSequence = 1;
+            
+            // Recrear pestañas de secuencias
+            sequenceTabs.innerHTML = '';
+            for (let i = 1; i <= Object.keys(sequences).length; i++) {
+                const tab = document.createElement('div');
+                tab.className = 'sequence-tab' + (i === 1 ? ' active' : '');
+                tab.textContent = `Secuencia ${i}`;
+                tab.dataset.sequence = i;
+                tab.addEventListener('click', () => changeSequence(i));
+                sequenceTabs.appendChild(tab);
+            }
+            
+            // Cerrar modal y mostrar editor
+            loadModal.style.display = 'none';
+            welcomeScreen.style.display = 'none';
+            editorScreen.style.display = 'block';
+        }
+        
+        // Función para mostrar modal de guardado
+        function showSaveModal() {
+            saveModal.style.display = 'flex';
+        }
+        
+        // Función para guardar actividad
+        function saveActivity() {
+            const activityName = document.getElementById('activityName').value.trim();
+            
+            if (!activityName) {
+                alert('Por favor, introduce un nombre para la actividad.');
+                return;
+            }
+            
+            // Preparar datos para guardar
+            const elementsData = elements.map(el => {
+                const element = document.getElementById(el.id);
+                return {
+                    id: el.id,
+                    type: el.type,
+                    x: parseInt(element.style.left),
+                    y: parseInt(element.style.top)
+                };
+            });
+            
+            const activityData = {
+                elements: elementsData,
+                sequences: sequences
+            };
+            
+            try {
+                // Guardar en localStorage
+                const savedActivities = JSON.parse(localStorage.getItem('soccerActivities')) || {};
+                savedActivities[activityName] = activityData;
+                localStorage.setItem('soccerActivities', JSON.stringify(savedActivities));
+                
+                alert(`Actividad "${activityName}" guardada correctamente.`);
+                saveModal.style.display = 'none';
+            } catch (error) {
+                console.error('Error al guardar:', error);
+                alert('Error al guardar la actividad. Inténtalo de nuevo.');
+            }
+        }
+        
+        // Función para volver al menú principal
+        function backToMenu() {
+            if (confirm('¿Estás seguro de volver al menú? Se perderán los cambios no guardados.')) {
+                editorScreen.style.display = 'none';
+                welcomeScreen.style.display = 'block';
+            }
+        }
+        
+        // Función para crear un elemento arrastrable
+        function createDraggableElement(type, customId = null) {
+            const id = customId || `element-${++elementCounter}`;
+            
+            const element = document.createElement('img');
+            element.className = 'element';
+            element.id = id;
+            element.dataset.type = type;
+            
+            // Establecer imagen según el tipo
+            switch (type) {
+                case 'ball':
+                    element.src = "C:/Users/Emanuel/OneDrive/Desktop/App clases de futbol/pelota.png";
+                    break;
+                case 'cone':
+                    element.src = "C:/Users/Emanuel/OneDrive/Desktop/App clases de futbol/cono.png";
+                    break;
+                case 'player':
+                    element.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCA1MCI+PGNpcmNsZSBjeD0iMjUiIGN5PSIxNSIgcj0iMTAiIGZpbGw9IiMzNDk4ZGIiLz48cGF0aCBkPSJNMjUgMjVjLTcuNSAwLTE1IDMtMTUgOHYxMmgzMFYzM2MwLTUtNy41LTgtMTUtOHoiIGZpbGw9IiMzNDk4ZGIiLz48L3N2Zz4=';
+                    break;
+                case 'player2':
+                    element.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCA1MCI+PGNpcmNsZSBjeD0iMjUiIGN5PSIxNSIgcj0iMTAiIGZpbGw9IiNlNzRjM2MiLz48cGF0aCBkPSJNMjUgMjVjLTcuNSAwLTE1IDMtMTUgOHYxMmgzMFYzM2MwLTUtNy41LTgtMTUtOHoiIGZpbGw9IiNlNzRjM2MiLz48L3N2Zz4=';
+                    break;
+                case 'marker':
+                    element.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCA1MCI+PHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIGZpbGw9IiMyN2FlNjAiLz48L3N2Zz4=';
+                    break;
+            }
+
+            element.style.position = 'absolute';
+            element.style.left = '0px';
+            element.style.top = '0px';
+            
+            elements.push({ id: id, type: type });
+            fieldContainer.appendChild(element);
+            return element;
+        }
+
+        // Configurar eventos de arrastre
+        function setupFieldDragEvents() {
+            fieldContainer.addEventListener('mousedown', startDragging);
+            document.addEventListener('mousemove', dragElement);
+            document.addEventListener('mouseup', stopDragging);
+        }
+
+        // Manejar inicio de arrastre
+        function startDragging(e) {
+            if (e.target.classList.contains('element') && !isAnimating) {
+                isDragging = true;
+                selectedElement = e.target;
+                selectedElementId = selectedElement.id;
+                
+                // Registrar posición inicial en la secuencia
+                const rect = selectedElement.getBoundingClientRect();
+                sequences[currentSequence].elements[selectedElementId] = {
+                    startX: rect.left - fieldContainer.getBoundingClientRect().left,
+                    startY: rect.top - fieldContainer.getBoundingClientRect().top,
+                    endX: rect.left - fieldContainer.getBoundingClientRect().left,
+                    endY: rect.top - fieldContainer.getBoundingClientRect().top
+                };
+                
+                offsetX = e.clientX - rect.left;
+                offsetY = e.clientY - rect.top;
+                selectedElement.style.cursor = 'grabbing';
+            }
+        }
+
+        // Manejar arrastre
+        function dragElement(e) {
+            if (isDragging && selectedElement) {
+                const fieldRect = fieldContainer.getBoundingClientRect();
+                let newX = e.clientX - fieldRect.left - offsetX;
+                let newY = e.clientY - fieldRect.top - offsetY;
+
+                // Mantener dentro del campo
+                newX = Math.max(0, Math.min(newX, fieldRect.width - selectedElement.offsetWidth));
+                newY = Math.max(0, Math.min(newY, fieldRect.height - selectedElement.offsetHeight));
+
+                selectedElement.style.left = newX + 'px';
+                selectedElement.style.top = newY + 'px';
+
+                // Actualizar posición final en la secuencia
+                sequences[currentSequence].elements[selectedElementId].endX = newX;
+                sequences[currentSequence].elements[selectedElementId].endY = newY;
+            }
+        }
+
+        // Detener arrastre
+        function stopDragging() {
+            if (isDragging) {
+                isDragging = false;
+                if (selectedElement) {
+                    selectedElement.style.cursor = 'move';
+                    selectedElement = null;
+                    selectedElementId = null;
+                }
+            }
+        }
+
+        // Añadir nueva secuencia
+        function addSequence() {
+            const newSequenceNumber = Object.keys(sequences).length + 1;
+            sequences[newSequenceNumber] = { elements: {} };
+            currentSequence = newSequenceNumber;
+            updateSequenceTabs();
+            updateSequenceLog();
+        }
+
+        // 7. Actualizar la inicialización con el nuevo botón
+        document.addEventListener('DOMContentLoaded', () => {
+            // ... otros event listeners
+            
+            // Nuevo evento para el botón de eliminar
+            document.getElementById('btnDeleteSequence').addEventListener('click', deleteSequence);
+            
+            // Inicializar registro
+            updateSequenceLog();
+        });
+
+
+        // Cambiar secuencia actual
+        function changeSequence(sequenceNumber) {
+    // Guardar posiciones actuales en la secuencia anterior
+        elements.forEach(el => {
+            const element = document.getElementById(el.id);
+            if (element) {
+                const rect = element.getBoundingClientRect();
+                const fieldRect = fieldContainer.getBoundingClientRect();
+                sequences[currentSequence].elements[el.id] = {
+                    startX: rect.left - fieldRect.left,
+                    startY: rect.top - fieldRect.top,
+                    endX: rect.left - fieldRect.left,
+                    endY: rect.top - fieldRect.top
+                };
+            }
+        });
+
+    // Actualizar secuencia actual
+    currentSequence = sequenceNumber;
+    
+    // Restaurar posiciones de la nueva secuencia
+    elements.forEach(el => {
+        const element = document.getElementById(el.id);
+        if (element && sequences[currentSequence].elements[el.id]) {
+            const pos = sequences[currentSequence].elements[el.id];
+            element.style.left = pos.startX + 'px';
+            element.style.top = pos.startY + 'px';
+        }
+    });
+
+    // Actualizar interfaz
+    updateSequenceTabs();
+    updateSequenceLog();
+}
+
+        // Reproducir todas las secuencias
+        async function playAllSequences() {
+            if (isAnimating) return;
+            isAnimating = true;
+            
+            for (const [seqNum, sequence] of Object.entries(sequences)) {
+                await animateSequence(sequence);
+            }
+            
+            isAnimating = false;
+        }
+
+        // Animar una secuencia individual
+        async function animateSequence(sequence) {
+            return new Promise(resolve => {
+                const log = document.getElementById('sequenceLog');
+                log.innerHTML = '<div class="log-entry current-sequence">Reproduciendo secuencia...</div>';
+                
+                // Guardar posiciones originales
+                const originalPositions = new Map();
+                elements.forEach(el => {
+                    const element = document.getElementById(el.id);
+                    originalPositions.set(el.id, {
+                        x: element.style.left,
+                        y: element.style.top
+                    });
+                });
+
+                // Aplicar animación
+                Object.entries(sequence.elements).forEach(([id, movement]) => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.style.transition = 'all 1s ease-in-out';
+                        element.style.left = movement.endX + 'px';
+                        element.style.top = movement.endY + 'px';
+                    }
+                });
+
+                // Actualizar registro durante la animación
+                setTimeout(() => {
+                    log.innerHTML = Object.entries(sequence.elements).map(([id, movement]) => {
+                        const element = elements.find(el => el.id === id);
+                        return `Elemento ${element?.type || 'desconocido'} movido a (${Math.round(movement.endX)}, ${Math.round(movement.endY)})`;
+                    }).join('<br>');
+                }, 500);
+
+                // Restaurar posiciones y resolver
+                setTimeout(() => {
+                    elements.forEach(el => {
+                        const element = document.getElementById(el.id);
+                        if (element) {
+                            element.style.transition = 'none';
+                            const original = originalPositions.get(el.id);
+                            element.style.left = original.x;
+                            element.style.top = original.y;
+                        }
+                    });
+                    resolve();
+                }, 1100);
+            });
+        }
+        function updateSequenceTabs() {
+            sequenceTabs.innerHTML = '';
+            Object.keys(sequences).forEach(seq => {
+                const tab = document.createElement('div');
+                tab.className = `sequence-tab ${seq == currentSequence ? 'active' : ''}`;
+                tab.textContent = `Secuencia ${seq}`;
+                tab.dataset.sequence = seq;
+                tab.addEventListener('click', () => changeSequence(parseInt(seq)));
+                sequenceTabs.appendChild(tab);
+            });
+        }
+
+        function deleteSequence() {
+            const totalSequences = Object.keys(sequences).length;
+            
+            if (totalSequences === 1) {
+                alert('Debe haber al menos una secuencia');
+                return;
+            }
+            
+            if (confirm(`¿Eliminar la secuencia ${currentSequence}?`)) {
+                // Eliminar la secuencia
+                delete sequences[currentSequence];
+                
+                // Reorganizar las secuencias restantes
+                const newSequences = {};
+                let newIndex = 1;
+                Object.keys(sequences).forEach(key => {
+                    if (key != currentSequence) {
+                        newSequences[newIndex] = sequences[key];
+                        newIndex++;
+                    }
+                });
+                
+                sequences = newSequences;
+                currentSequence = Math.min(currentSequence, Object.keys(sequences).length);
+                
+                // Actualizar la interfaz
+                updateSequenceTabs();
+                updateSequenceLog();
+                changeSequence(currentSequence);
+            }
+        }
+
+// Función para actualizar el registro de secuencias
+        function updateSequenceLog() {
+            const log = document.getElementById('sequenceLog');
+            log.innerHTML = '';
+            
+            Object.entries(sequences).forEach(([seqNum, sequence]) => {
+                const entry = document.createElement('div');
+                entry.className = `log-entry ${seqNum == currentSequence ? 'current-sequence' : ''}`;
+                
+                const moves = Object.entries(sequence.elements).map(([id, data]) => {
+                    const element = elements.find(el => el.id === id);
+                    const elementType = element ? element.type : 'Elemento eliminado';
+                    return `${elementType}: (${Math.round(data.startX)},${Math.round(data.startY)}) → (${Math.round(data.endX)},${Math.round(data.endY)})`;
+                }).join('<br>');
+                
+                entry.innerHTML = `<strong>Secuencia ${seqNum}:</strong><br>${moves || 'Sin movimientos registrados'}`;
+                log.appendChild(entry);
+            });
+        }
+
+        // Reiniciar editor
+        function resetEditor() {
+            fieldContainer.innerHTML = '';
+            elements = [];
+            elementCounter = 0;
+            currentSequence = 1;
+            sequences = { 1: { elements: {} } };
+            sequenceTabs.innerHTML = '<div class="sequence-tab active" data-sequence="1">Secuencia 1</div>';
+            document.getElementById('sequenceLog').innerHTML = '<div class="log-entry current-sequence">Secuencia 1: Edición actual</div>';
+        }
+    </script>
+</body>
+</html>
+    
+    </script>
+</body>
