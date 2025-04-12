@@ -506,8 +506,11 @@
         // Configurar eventos de arrastre
         function setupFieldDragEvents() {
             fieldContainer.addEventListener('mousedown', startDragging);
+            fieldContainer.addEventListener('touchstart', startDragging, { passive: false });
             document.addEventListener('mousemove', dragElement);
+            document.addEventListener('touchmove', dragElement, { passive: false });
             document.addEventListener('mouseup', stopDragging);
+            document.addEventListener('touchend', stopDragging);
         }
 
         // Manejar inicio de arrastre
