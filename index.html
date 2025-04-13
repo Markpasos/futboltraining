@@ -222,6 +222,44 @@
             border: 1px solid #ddd;
             border-radius: 5px;
         }
+        @media (max-width: 600px) {
+            .btn { padding: 16px 28px; } /* Botones más grandes */
+            .tool { width: 60px; height: 60px; } /* Herramientas más táctiles */
+            .field-container { height: 50vh; } /* Ajuste del campo */
+        }
+        @media (max-width: 600px) {
+    .btn {
+        padding: 12px 20px !important;
+        margin: 8px;
+        font-size: 14px;
+    }
+    
+    .tool {
+        width: 45px;
+        height: 45px;
+        touch-action: none;
+    }
+    
+    .field-container {
+        height: 60vh;
+        touch-action: none;
+    }
+    
+    .modal-content {
+        width: 95%;
+        padding: 15px;
+    }
+    
+    .element {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+/* Prevent zoom on touch */
+input, textarea, select, button {
+    font-size: 16px;
+}
     </style>
 </head>
 <body>
@@ -237,8 +275,8 @@
             <h1>Editor de Actividades</h1>
             
             <div class="tools-container">
-                <img src="https://github.com/Markpasos/futboltraining/blob/main/pelota.png?raw=true" class="tool" data-type="ball" alt="Pelota">
-                <img src="https://github.com/Markpasos/futboltraining/blob/main/cono.png?raw=true" class="tool" data-type="cone" alt="Cono">
+                <img src="imagenes\pelota.png" class="tool" data-type="ball" alt="Pelota">
+                <img src="imagenes\cono.png" class="tool" data-type="cone" alt="Cono">
                 <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCA1MCI+PGNpcmNsZSBjeD0iMjUiIGN5PSIxNSIgcj0iMTAiIGZpbGw9IiMzNDk4ZGIiLz48cGF0aCBkPSJNMjUgMjVjLTcuNSAwLTE1IDMtMTUgOHYxMmgzMFYzM2MwLTUtNy41LTgtMTUtOHoiIGZpbGw9IiMzNDk4ZGIiLz48L3N2Zz4=" class="tool" data-type="player" alt="Jugador">
                 <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCA1MCI+PGNpcmNsZSBjeD0iMjUiIGN5PSIxNSIgcj0iMTAiIGZpbGw9IiNlNzRjM2MiLz48cGF0aCBkPSJNMjUgMjVjLTcuNSAwLTE1IDMtMTUgOHYxMmgzMFYzM2MwLTUtNy41LTgtMTUtOHoiIGZpbGw9IiNlNzRjM2MiLz48L3N2Zz4=" class="tool" data-type="player2" alt="Jugador 2">
                 <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCA1MCI+PHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIGZpbGw9IiMyN2FlNjAiLz48L3N2Zz4=" class="tool" data-type="marker" alt="Marcador">
@@ -252,6 +290,8 @@
                 <button class="btn" id="btnSaveActivity">Guardar Actividad</button>
                 <button class="btn btn-danger" id="btnBackToMenu">Volver al Menú</button>
                 <button class="btn btn-danger" id="btnDeleteSequence">Eliminar Secuencia</button>
+                <button class="btn btn-secondary" id="btnSaveFile">Guardar como Archivo</button>
+                <button class="btn btn-secondary" id="btnLoadFile">Cargar Archivo</button>
             </div>
             
             <div class="sequence-panel">
@@ -331,7 +371,7 @@
             document.getElementById('btnConfirmSave').addEventListener('click', saveActivity);
             document.getElementById('btnCancelSave').addEventListener('click', () => saveModal.style.display = 'none');
             document.getElementById('btnCancelLoad').addEventListener('click', () => loadModal.style.display = 'none');
-            
+            document.getElementById('btnSaveFile').addEventListener('click', saveAsFile);
             // Eventos para herramientas
             document.querySelectorAll('.tool').forEach(tool => {
                 tool.addEventListener('mousedown', (e) => {
@@ -339,11 +379,29 @@
                     createDraggableElement(e.target.dataset.type);
                 });
             });
-            
+            document.getElementById('btnSaveFile').addEventListener('click', saveAsFile);
+
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.json';
+            fileInput.style.display = 'none';
+            fileInput.addEventListener('change', (e) => {
+                if(e.target.files[0]) loadFromFile(e.target.files[0]);
+            });
+            document.body.appendChild(fileInput);
+            document.getElementById('btnLoadFile').addEventListener('click', () => fileInput.click());
             // Configurar eventos de arrastre para el campo
             setupFieldDragEvents();
         });
-        
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = '.json';
+        fileInput.style.display = 'none';
+        fileInput.addEventListener('change', (e) => {
+            if(e.target.files[0]) loadFromFile(e.target.files[0]);
+        });
+        document.body.appendChild(fileInput);
+        document.getElementById('btnLoadFile').addEventListener('click', () => fileInput.click());
         // Función para iniciar una nueva actividad
         function startNewActivity() {
             welcomeScreen.style.display = 'none';
@@ -478,10 +536,10 @@
             // Establecer imagen según el tipo
             switch (type) {
                 case 'ball':
-                    element.src = "https://github.com/Markpasos/futboltraining/blob/main/pelota.png?raw=true";
+                    element.src = "pelota.png";
                     break;
                 case 'cone':
-                    element.src = "https://github.com/Markpasos/futboltraining/blob/main/cono.png?raw=true";
+                    element.src = "cono.png";
                     break;
                 case 'player':
                     element.src = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCA1MCI+PGNpcmNsZSBjeD0iMjUiIGN5PSIxNSIgcj0iMTAiIGZpbGw9IiMzNDk4ZGIiLz48cGF0aCBkPSJNMjUgMjVjLTcuNSAwLTE1IDMtMTUgOHYxMmgzMFYzM2MwLTUtNy41LTgtMTUtOHoiIGZpbGw9IiMzNDk4ZGIiLz48L3N2Zz4=';
@@ -502,8 +560,19 @@
             fieldContainer.appendChild(element);
             return element;
         }
-
-        // Configurar eventos de arrastre
+        function getClientCoordinates(e) {
+            if (e.touches && e.touches.length > 0) {
+                return {
+                    clientX: e.touches[0].clientX,
+                    clientY: e.touches[0].clientY
+                };
+            }
+            return {
+                clientX: e.clientX,
+                clientY: e.clientY
+            };
+        }
+                // Configurar eventos de arrastre
         function setupFieldDragEvents() {
             fieldContainer.addEventListener('mousedown', startDragging);
             fieldContainer.addEventListener('touchstart', startDragging, { passive: false });
@@ -512,6 +581,15 @@
             document.addEventListener('mouseup', stopDragging);
             document.addEventListener('touchend', stopDragging);
         }
+
+// En las funciones, usa clientX/clientY del evento táctil:
+function startDragging(e) {
+    const coords = getClientCoordinates(e);
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    offsetX = coords.clientX - rect.left;
+    offsetY = coords.clientY - rect.top;
+}
 
         // Manejar inicio de arrastre
         function startDragging(e) {
@@ -538,6 +616,7 @@
         // Manejar arrastre
         function dragElement(e) {
             if (isDragging && selectedElement) {
+                const coords = getClientCoordinates(e);
                 const fieldRect = fieldContainer.getBoundingClientRect();
                 let newX = e.clientX - fieldRect.left - offsetX;
                 let newY = e.clientY - fieldRect.top - offsetY;
@@ -586,8 +665,34 @@
             // Inicializar registro
             updateSequenceLog();
         });
-
-
+        function saveAsFile() {
+            const data = JSON.stringify({
+                elements: elements,
+                sequences: sequences
+            });
+            
+            const blob = new Blob([data], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `entrenamiento_${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        function loadFromFile(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    loadActivity('Archivo cargado', data);
+                } catch(error) {
+                    alert('Error al cargar archivo: Formato inválido');
+                }
+            };
+            reader.readAsText(file);
+        }
         // Cambiar secuencia actual
         function changeSequence(sequenceNumber) {
     // Guardar posiciones actuales en la secuencia anterior
