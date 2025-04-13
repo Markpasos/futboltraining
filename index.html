@@ -111,6 +111,7 @@
             cursor: move;
             user-select: none;
             z-index: 10;
+            touch-action: none
         }
         
         .controls {
@@ -223,16 +224,17 @@
             border-radius: 5px;
         }
         @media (max-width: 600px) {
-            .btn { padding: 16px 28px; } /* Botones más grandes */
-            .tool { width: 60px; height: 60px; } /* Herramientas más táctiles */
-            .field-container { height: 50vh; } /* Ajuste del campo */
+        .tool {
+            width: 70px;
+            height: 70px;
+            margin: 12px;
         }
-        @media (max-width: 600px) {
-    .btn {
-        padding: 12px 20px !important;
-        margin: 8px;
-        font-size: 14px;
-    }
+        
+        .element {
+            width: 50px;
+            height: 50px;
+        }
+}
     
     .tool {
         width: 45px;
@@ -253,8 +255,8 @@
     .element {
         width: 35px;
         height: 35px;
+        touch-action: none;
     }
-}
 
 /* Prevent zoom on touch */
 input, textarea, select, button {
@@ -378,6 +380,12 @@ input, textarea, select, button {
                     e.preventDefault();
                     createDraggableElement(e.target.dataset.type);
                 });
+    
+                // Agrega esto para soporte táctil:
+                tool.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    createDraggableElement(e.target.dataset.type);
+                }, { passive: false });
             });
             document.getElementById('btnSaveFile').addEventListener('click', saveAsFile);
 
@@ -532,7 +540,10 @@ input, textarea, select, button {
             element.className = 'element';
             element.id = id;
             element.dataset.type = type;
-            
+            element.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                startDragging(e); // Esto conecta con tu lógica existente de arrastre
+            }, { passive: false });
             // Establecer imagen según el tipo
             switch (type) {
                 case 'ball':
@@ -581,59 +592,60 @@ input, textarea, select, button {
             document.addEventListener('mouseup', stopDragging);
             document.addEventListener('touchend', stopDragging);
         }
-
-// En las funciones, usa clientX/clientY del evento táctil:
+                // Manejar inicio de arrastre
 function startDragging(e) {
-    const coords = getClientCoordinates(e);
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    offsetX = coords.clientX - rect.left;
-    offsetY = coords.clientY - rect.top;
+    // Previene el comportamiento por defecto (scroll/zoom)
+    e.preventDefault();
+    
+    if (e.target.classList.contains('element') && !isAnimating) {
+        isDragging = true;
+        selectedElement = e.target;
+        selectedElementId = selectedElement.id;
+        
+        const coords = getClientCoordinates(e);
+        const rect = selectedElement.getBoundingClientRect();
+        const fieldRect = fieldContainer.getBoundingClientRect();
+        
+        // Registrar posición inicial en la secuencia
+        sequences[currentSequence].elements[selectedElementId] = {
+            startX: rect.left - fieldRect.left,
+            startY: rect.top - fieldRect.top,
+            endX: rect.left - fieldRect.left,
+            endY: rect.top - fieldRect.top
+        };
+        
+        // Calcular offset correctamente para touch/mouse
+        offsetX = coords.clientX - rect.left;
+        offsetY = coords.clientY - rect.top;
+        
+        selectedElement.style.cursor = 'grabbing';
+    }
 }
-
-        // Manejar inicio de arrastre
-        function startDragging(e) {
-            if (e.target.classList.contains('element') && !isAnimating) {
-                isDragging = true;
-                selectedElement = e.target;
-                selectedElementId = selectedElement.id;
-                
-                // Registrar posición inicial en la secuencia
-                const rect = selectedElement.getBoundingClientRect();
-                sequences[currentSequence].elements[selectedElementId] = {
-                    startX: rect.left - fieldContainer.getBoundingClientRect().left,
-                    startY: rect.top - fieldContainer.getBoundingClientRect().top,
-                    endX: rect.left - fieldContainer.getBoundingClientRect().left,
-                    endY: rect.top - fieldContainer.getBoundingClientRect().top
-                };
-                
-                offsetX = e.clientX - rect.left;
-                offsetY = e.clientY - rect.top;
-                selectedElement.style.cursor = 'grabbing';
-            }
-        }
 
         // Manejar arrastre
         function dragElement(e) {
-            if (isDragging && selectedElement) {
-                const coords = getClientCoordinates(e);
-                const fieldRect = fieldContainer.getBoundingClientRect();
-                let newX = e.clientX - fieldRect.left - offsetX;
-                let newY = e.clientY - fieldRect.top - offsetY;
+    if (isDragging && selectedElement) {
+        e.preventDefault(); // Añade esto para móviles
+        
+        const coords = getClientCoordinates(e);
+        const fieldRect = fieldContainer.getBoundingClientRect();
+        
+        // Usar coords en lugar de e directamente
+        let newX = coords.clientX - fieldRect.left - offsetX;
+        let newY = coords.clientY - fieldRect.top - offsetY;
 
-                // Mantener dentro del campo
-                newX = Math.max(0, Math.min(newX, fieldRect.width - selectedElement.offsetWidth));
-                newY = Math.max(0, Math.min(newY, fieldRect.height - selectedElement.offsetHeight));
+        // Mantener dentro del campo
+        newX = Math.max(0, Math.min(newX, fieldRect.width - selectedElement.offsetWidth));
+        newY = Math.max(0, Math.min(newY, fieldRect.height - selectedElement.offsetHeight));
 
-                selectedElement.style.left = newX + 'px';
-                selectedElement.style.top = newY + 'px';
+        selectedElement.style.left = newX + 'px';
+        selectedElement.style.top = newY + 'px';
 
-                // Actualizar posición final en la secuencia
-                sequences[currentSequence].elements[selectedElementId].endX = newX;
-                sequences[currentSequence].elements[selectedElementId].endY = newY;
-            }
-        }
-
+        // Actualizar posición final en la secuencia
+        sequences[currentSequence].elements[selectedElementId].endX = newX;
+        sequences[currentSequence].elements[selectedElementId].endY = newY;
+    }
+}
         // Detener arrastre
         function stopDragging() {
             if (isDragging) {
