@@ -362,12 +362,12 @@
             <!-- herramientas que se usan en el field -->
             <div class="field-container" id="fieldContainer">
                 <div class="trash-bin" id="trashBin">
-                    <img src="./imagenes/tachoBasura.png" alt="Papelera">
+                    <img src="Imagenes/tachoBasura.png" alt="Papelera">
                 </div>
             </div>
             <div class="tools-container">
-                <img src="./imagenes/pelota.png" class="tool" data-type="ball" alt="Pelota">
-                <img src="./imagenes/cono.png" class="tool" data-type="cone" alt="Cono">
+                <img src="Imagenes/pelota.png" class="tool" data-type="ball" alt="Pelota">
+                <img src="Imagenes/cono.png" class="tool" data-type="cone" alt="Cono">
                 <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCA1MCI+PGNpcmNsZSBjeD0iMjUiIGN5PSIxNSIgcj0iMTAiIGZpbGw9IiMzNDk4ZGIiLz48cGF0aCBkPSJNMjUgMjVjLTcuNSAwLTE1IDMtMTUgOHYxMmgzMFYzM2MwLTUtNy41LTgtMTUtOHoiIGZpbGw9IiMzNDk4ZGIiLz48L3N2Zz4=" class="tool" data-type="player" alt="Jugador" id="playerTool">
                 <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCA1MCI+PHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIGZpbGw9IiMyN2FlNjAiLz48L3N2Zz4=" 
                      class="tool" data-type="marker" alt="Marcador">
@@ -737,10 +737,10 @@
             // Asignar imagen según tipo y color
             switch (type) {
                 case 'ball':
-                    element.src = "./imagenes/pelota.png";
+                    element.src = "Imagenes/pelota.png";
                     break;
                 case 'cone':
-                    element.src = "./imagenes/cono.png";
+                    element.src = "Imagenes/cono.png";
                     break;
                 case 'player':
                     element.src = generatePlayerSVG(color); // Usar el color proporcionado
