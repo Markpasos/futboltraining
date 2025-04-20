@@ -345,824 +345,827 @@
         }
     </style>
 </head>
-    <body>
-        <div class="container">
-            <!-- pantalla de bienvenida -->
-            <div class="welcome-screen" id="welcomeScreen">
-                <h1>Planificador de Entrenamientos de Fútbol</h1>
-                <p>Crea y guarda tus rutinas de entrenamiento de forma visual</p>
-                <button class="btn" id="btnNewActivity">Comenzar Actividad</button>
-                <button class="btn btn-secondary" id="btnLoadActivity">Cargar Actividad Anterior</button>
+<body>
+    <div class="container">
+        <!-- pantalla de bienvenida -->
+        <div class="welcome-screen" id="welcomeScreen">
+            <h1>Planificador de Entrenamientos de Fútbol</h1>
+            <p>Crea y guarda tus rutinas de entrenamiento de forma visual</p>
+            <button class="btn" id="btnNewActivity">Comenzar Actividad</button>
+            <button class="btn btn-secondary" id="btnLoadActivity">Cargar Actividad Anterior</button>
+        </div>
+
+        <!-- pantalla de edición de actividades -->
+        <div class="editor-screen" id="editorScreen">
+            <h1>Editor de Actividades</h1>
+
+            <!-- herramientas que se usan en el field -->
+            <div class="field-container" id="fieldContainer">
+                <div class="trash-bin" id="trashBin">
+                    <img src="./imagenes/tachoBasura.png" alt="Papelera">
+                </div>
             </div>
-    
-            <!-- pantalla de edición de actividades -->
-            <div class="editor-screen" id="editorScreen">
-                <h1>Editor de Actividades</h1>
-    
-                <!-- herramientas que se usan en el field -->
-                <div class="field-container" id="fieldContainer">
-                    <div class="trash-bin" id="trashBin">
-                        <img src="Imagenes/tachoBasura" alt="Papelera">
-                    </div>
+            <div class="tools-container">
+                <img src="./imagenes/pelota.png" class="tool" data-type="ball" alt="Pelota">
+                <img src="./imagenes/cono.png" class="tool" data-type="cone" alt="Cono">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCA1MCI+PGNpcmNsZSBjeD0iMjUiIGN5PSIxNSIgcj0iMTAiIGZpbGw9IiMzNDk4ZGIiLz48cGF0aCBkPSJNMjUgMjVjLTcuNSAwLTE1IDMtMTUgOHYxMmgzMFYzM2MwLTUtNy41LTgtMTUtOHoiIGZpbGw9IiMzNDk4ZGIiLz48L3N2Zz4=" class="tool" data-type="player" alt="Jugador" id="playerTool">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCA1MCI+PHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIGZpbGw9IiMyN2FlNjAiLz48L3N2Zz4=" 
+                     class="tool" data-type="marker" alt="Marcador">
+            </div>
+            
+            <!-- Selector de color -->
+            <div class="color-picker" id="colorPicker" style="display: none;">
+                <input type="color" id="playerColor" value="#3498db">
+                <button class="btn" id="confirmColor">Crear Jugador</button>
+            </div>
+            
+            <!-- botones del menú de edición-->
+            <div class="controls">
+                <button class="btn" id="btnAddSequence">Nueva Secuencia</button>
+                <button class="btn btn-secondary" id="btnPlaySequence">Reproducir Secuencias</button>
+                <button class="btn" id="btnSaveActivity">Guardar Actividad</button>
+                <button class="btn btn-danger" id="btnBackToMenu">Volver al Menú</button>
+                <button class="btn btn-danger" id="btnDeleteSequence">Eliminar Secuencia</button>
+                <button class="btn btn-secondary" id="btnSaveFile">Guardar como Archivo</button>
+                <button class="btn btn-secondary" id="btnLoadFile">Cargar Archivo</button>
+            </div>
+
+            <!-- Secuencias -->
+            <div class="sequence-panel">
+                <h3>Secuencias</h3>
+                <div class="sequence-tabs" id="sequenceTabs">
+                    <div class="sequence-tab active" data-sequence="1">Secuencia 1</div>
                 </div>
-                <div class="tools-container">
-                    <img src="Imagenes/pelota.png" class="tool" data-type="ball" alt="Pelota">
-                    <img src="Imagenes/cono.png" class="tool" data-type="cone" alt="Cono">
-                    <img src="Imagenes/tachoBasura.png" class="tool" data-type="player" alt="Jugador" id="playerTool">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MCA1MCI+PHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIGZpbGw9IiMyN2FlNjAiLz48L3N2Zz4=" 
-                         class="tool" data-type="marker" alt="Marcador">
-                </div>
-                
-                <!-- Selector de color -->
-                <div class="color-picker" id="colorPicker" style="display: none;">
-                    <input type="color" id="playerColor" value="#3498db">
-                    <button class="btn" id="confirmColor">Crear Jugador</button>
-                </div>
-                
-                <!-- botones del menú de edición-->
-                <div class="controls">
-                    <button class="btn" id="btnAddSequence">Nueva Secuencia</button>
-                    <button class="btn btn-secondary" id="btnPlaySequence">Reproducir Secuencias</button>
-                    <button class="btn" id="btnSaveActivity">Guardar Actividad</button>
-                    <button class="btn btn-danger" id="btnBackToMenu">Volver al Menú</button>
-                    <button class="btn btn-danger" id="btnDeleteSequence">Eliminar Secuencia</button>
-                    <button class="btn btn-secondary" id="btnSaveFile">Guardar como Archivo</button>
-                    <button class="btn btn-secondary" id="btnLoadFile">Cargar Archivo</button>
-                </div>
-    
-                <!-- Secuencias -->
-                <div class="sequence-panel">
-                    <h3>Secuencias</h3>
-                    <div class="sequence-tabs" id="sequenceTabs">
-                        <div class="sequence-tab active" data-sequence="1">Secuencia 1</div>
-                    </div>
-                    <div class="sequence-log" id="sequenceLog">
-                        <div class="log-entry current-sequence">Secuencia 1: Edición actual</div>
-                    </div>
+                <div class="sequence-log" id="sequenceLog">
+                    <div class="log-entry current-sequence">Secuencia 1: Edición actual</div>
                 </div>
             </div>
         </div>
-        
-        <!-- Modal para guardar actividad -->
-        <div class="modal" id="saveModal">
-            <div class="modal-content">
-                <h2>Guardar Actividad</h2>
-                <input type="text" id="activityName" placeholder="Nombre de la actividad">
-                <div class="controls">
-                    <button class="btn" id="btnConfirmSave">Guardar</button>
-                    <button class="btn btn-danger" id="btnCancelSave">Cancelar</button>
-                </div>
+    </div>
+    
+    <!-- Modal para guardar actividad -->
+    <div class="modal" id="saveModal">
+        <div class="modal-content">
+            <h2>Guardar Actividad</h2>
+            <input type="text" id="activityName" placeholder="Nombre de la actividad">
+            <div class="controls">
+                <button class="btn" id="btnConfirmSave">Guardar</button>
+                <button class="btn btn-danger" id="btnCancelSave">Cancelar</button>
             </div>
         </div>
-        
-        <!-- Modal para cargar actividad -->
-        <div class="modal" id="loadModal">
-            <div class="modal-content">
-                <h2>Cargar Actividad</h2>
-                <input type="file" id="fileInput" accept=".json" style="display: none;">
-                <div class="saved-activities" id="savedActivitiesList">
-                    <!-- Las actividades guardadas se cargarán aquí -->
-                </div>
-                <div class="controls">
-                    <button class="btn btn-danger" id="btnCancelLoad">Cancelar</button>
-                    
-                </div>
+    </div>
+    
+    <!-- Modal para cargar actividad -->
+    <div class="modal" id="loadModal">
+        <div class="modal-content">
+            <h2>Cargar Actividad</h2>
+            <input type="file" id="fileInput" accept=".json" style="display: none;">
+            <div class="saved-activities" id="savedActivitiesList">
+                <!-- Las actividades guardadas se cargarán aquí -->
+            </div>
+            <div class="controls">
+                <button class="btn btn-danger" id="btnCancelLoad">Cancelar</button>
+                
             </div>
         </div>
+    </div>
+    
+    <script>
+
+        // Variables globales
+        let currentSequence = 1;
+        let sequences = { 1: { elements: {} } };
+        let elements = [];
+        let elementCounter = 0;
+        let isDragging = false;
+        let selectedElement = null;
+        let selectedElementId = null;
+        let offsetX, offsetY;
+        let isAnimating = false;
+        let mediaRecorder;
+        let recordedChunks = [];
+        let selectedPlayerType = null;
+        let isSelectingColor = false;
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const editorScreen = document.getElementById('editorScreen');
+        let fieldContainer;
+        const sequenceTabs = document.getElementById('sequenceTabs');
+        const saveModal = document.getElementById('saveModal');
+        const loadModal = document.getElementById('loadModal');
+        const savedActivitiesList = document.getElementById('savedActivitiesList');
+
+        //Inicialización de Eventos (DOMContentLoaded)
+        document.addEventListener('DOMContentLoaded', () => {
         
-        <script>
-    
-            // Variables globales
-            let currentSequence = 1;
-            let sequences = { 1: { elements: {} } };
-            let elements = [];
-            let elementCounter = 0;
-            let isDragging = false;
-            let selectedElement = null;
-            let selectedElementId = null;
-            let offsetX, offsetY;
-            let isAnimating = false;
-            let mediaRecorder;
-            let recordedChunks = [];
-            let selectedPlayerType = null;
-            let isSelectingColor = false;
-            const welcomeScreen = document.getElementById('welcomeScreen');
-            const editorScreen = document.getElementById('editorScreen');
-            let fieldContainer;
-            const sequenceTabs = document.getElementById('sequenceTabs');
-            const saveModal = document.getElementById('saveModal');
-            const loadModal = document.getElementById('loadModal');
-            const savedActivitiesList = document.getElementById('savedActivitiesList');
-    
-            //Inicialización de Eventos (DOMContentLoaded)
-            document.addEventListener('DOMContentLoaded', () => {
-            
-                // Eventos de la pantalla de bienvenida
-                document.getElementById('btnNewActivity').addEventListener('click', startNewActivity);
-                document.getElementById('btnLoadActivity').addEventListener('click', showLoadModal);
-                document.getElementById('btnCancelLoad').addEventListener('click', function() {
-                    // Cerrar el modal de carga
-                    document.getElementById('loadModal').style.display = 'none';
-                });
-    
-    
-                // Eventos del editor
-                document.getElementById('btnAddSequence').addEventListener('click', addSequence);
-                document.getElementById('btnPlaySequence').addEventListener('click', playAllSequences);
-                document.getElementById('btnSaveActivity').addEventListener('click', showSaveModal);
-                document.getElementById('btnBackToMenu').addEventListener('click', backToMenu);
-                document.getElementById('btnDeleteSequence').addEventListener('click', deleteSequence);
-                document.getElementById('btnSaveFile').addEventListener('click', saveAsFile);
-                document.getElementById('btnLoadFile').addEventListener('click', () => {
-                    fileInput.value = ''; // Resetear para permitir cargar el mismo archivo múltiples veces
-                    fileInput.click();
-                });
-            
-                // Configuración del input de archivo
-                const fileInput = document.createElement('input');
-                fileInput.type = 'file';
-                fileInput.accept = '.json';
-                fileInput.style.display = 'none';
-                document.body.appendChild(fileInput);
-            
-            // Configurar evento de carga de archivo
-                fileInput.addEventListener('change', function(e) {
-                    if (e.target.files.length > 0) {
-                        const file = e.target.files[0];
-                        if (file.type === 'application/json' || file.name.endsWith('.json')) {
-                            loadFromFile(file);
-                        } else {
-                            alert('Por favor, selecciona un archivo JSON');
-                        }
-                    }
-                });
-                // Configuración del player tool (añadir al DOMContentLoaded)
-                document.getElementById('playerTool').addEventListener('click', function(e) {
-                    e.preventDefault();
-                    document.getElementById('colorPicker').style.display = 'block';
-                });
-    
-                document.getElementById('confirmColor').addEventListener('click', function() {
-                    const color = document.getElementById('playerColor').value;
-                    document.getElementById('colorPicker').style.display = 'none';
-                    createDraggableElement('player', null, color);
-                });
-                    // Configuración de eventos de arrastre
-                    setupFieldDragEvents();
-                });
-                document.getElementById('btnCancelSave').addEventListener('click', function() {
-                    // Cerrar el modal de carga
-                    document.getElementById('saveModal').style.display = 'none';
-                });
-                fieldContainer = document.getElementById('fieldContainer');
-            //FUNCIONES DE GESTIÓN DE ACTIVIDADES
-            function startNewActivity() {
-            welcomeScreen.style.display = 'none';
-            editorScreen.style.display = 'block';
-            resetEditor();
-        }
-    
-            function showLoadModal() {
-                loadSavedActivities();
-                loadModal.style.display = 'flex';
-            }
-    
-            function showSaveModal() {
-            saveModal.style.display = 'flex';
-        }
-    
-            function backToMenu() {
-            if (confirm('¿Estás seguro de volver al menú? Se perderán los cambios no guardados.')) {
-                resetEditor(); // Limpia el editor antes de volver
-                editorScreen.style.display = 'none';
-                welcomeScreen.style.display = 'block';
-            }
-        }
-        function resetEditor() {
-            // Limpiar el campo visualmente, excepto el trash bin
-            const trashBin = document.getElementById('trashBin');
-            fieldContainer.innerHTML = '';
-            if (trashBin) {
-                fieldContainer.appendChild(trashBin);
-            }
-            
-            // Reiniciar variables globales
-            elements = [];
-            elementCounter = 0;
-            currentSequence = 1;
-            sequences = { 
-                1: { 
-                    elements: {},
-                    name: 'Secuencia 1'
-                } 
-            };
-            
-            // Restablecer la UI
-            sequenceTabs.innerHTML = '<div class="sequence-tab active" data-sequence="1">Secuencia 1</div>';
-            document.getElementById('sequenceLog').innerHTML = '<div class="log-entry current-sequence">Secuencia 1: Edición actual</div>';
-        }
-        //FUNCIONES DE SECUENCIAS
-    
-            function addSequence() {
-            const newSequenceNumber = Object.keys(sequences).length + 1;
-            
-            // Guardar el estado actual ANTES de crear la nueva secuencia
-            saveCurrentSequenceState();  // <-- Añadir esta línea
-            
-            sequences[newSequenceNumber] = { elements: {} };
-            currentSequence = newSequenceNumber;
-            
-            // Copiar las posiciones actuales a la nueva secuencia
-            elements.forEach(el => {
-                const element = document.getElementById(el.id);
-                if (element) {
-                    sequences[newSequenceNumber].elements[el.id] = {
-                        startX: parseInt(element.style.left) || 0,
-                        startY: parseInt(element.style.top) || 0,
-                        endX: parseInt(element.style.left) || 0,  // Inicialmente igual a startX/Y
-                        endY: parseInt(element.style.top) || 0
-                    };
-                }
+            // Eventos de la pantalla de bienvenida
+            document.getElementById('btnNewActivity').addEventListener('click', startNewActivity);
+            document.getElementById('btnLoadActivity').addEventListener('click', showLoadModal);
+            document.getElementById('btnCancelLoad').addEventListener('click', function() {
+                // Cerrar el modal de carga
+                document.getElementById('loadModal').style.display = 'none';
             });
-            
-            updateSequenceTabs();
-            updateSequenceLog();
-        }
-    
-        function changeSequence(sequenceNumber) {
-            if (isAnimating) return;
-            
-            // Guardar la secuencia actual antes de cambiar
-            saveCurrentSequenceState();
-            
-            // Cambiar a la nueva secuencia
-            currentSequence = parseInt(sequenceNumber);
-            
-            // Restaurar la nueva secuencia
-            restoreSequenceState();
-            
-            // Actualizar la UI
-            updateSequenceTabs();
-            updateSequenceLog();
-        }
-    
-        function deleteSequence() {
-            const totalSequences = Object.keys(sequences).length;
-            if (totalSequences === 1) {
-                alert('Debe haber al menos una secuencia');
-                return;
-            }
-            
-            if (confirm(`¿Eliminar la secuencia ${currentSequence}?`)) {
-                // Guardar el número de secuencia a eliminar
-                const sequenceToDelete = currentSequence;
-                
-                // Crear un nuevo objeto de secuencias manteniendo los datos originales
-                const newSequences = {};
-                
-                // Copiar todas las secuencias excepto la que queremos eliminar
-                // manteniendo los datos intactos
-                for (let i = 1; i <= totalSequences; i++) {
-                    if (i != sequenceToDelete) {
-                        // Si está antes de la eliminada, conserva su número
-                        if (i < sequenceToDelete) {
-                            newSequences[i] = JSON.parse(JSON.stringify(sequences[i]));
-                        } 
-                        // Si está después de la eliminada, reduce su número en 1
-                        else {
-                            newSequences[i-1] = JSON.parse(JSON.stringify(sequences[i]));
-                        }
+
+
+            // Eventos del editor
+            document.getElementById('btnAddSequence').addEventListener('click', addSequence);
+            document.getElementById('btnPlaySequence').addEventListener('click', playAllSequences);
+            document.getElementById('btnSaveActivity').addEventListener('click', showSaveModal);
+            document.getElementById('btnBackToMenu').addEventListener('click', backToMenu);
+            document.getElementById('btnDeleteSequence').addEventListener('click', deleteSequence);
+            document.getElementById('btnSaveFile').addEventListener('click', saveAsFile);
+            document.getElementById('btnLoadFile').addEventListener('click', () => {
+                fileInput.value = ''; // Resetear para permitir cargar el mismo archivo múltiples veces
+                fileInput.click();
+            });
+        
+            // Configuración del input de archivo
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.json';
+            fileInput.style.display = 'none';
+            document.body.appendChild(fileInput);
+        
+        // Configurar evento de carga de archivo
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    if (file.type === 'application/json' || file.name.endsWith('.json')) {
+                        loadFromFile(file);
+                    } else {
+                        alert('Por favor, selecciona un archivo JSON');
                     }
                 }
-                
-                sequences = newSequences;
-                
-                // Ajustar la secuencia actual
-                if (sequenceToDelete > Object.keys(sequences).length) {
-                    currentSequence = Object.keys(sequences).length; // Ir a la última si eliminamos la última
-                } else {
-                    currentSequence = sequenceToDelete <= 1 ? 1 : sequenceToDelete - 1; // Ir a la anterior si es posible
-                }
-                
-                updateSequenceTabs();
-                updateSequenceLog();
-                restoreSequenceState(); // Asegura que la visualización sea correcta
-            }
-        }
-    
-        function saveCurrentSequenceState() {
-            sequences[currentSequence].elements = {};
-            elements.forEach(el => {
-                const element = document.getElementById(el.id);
-                if (element) {
-                    // Obtener posición en porcentajes (asegurarse que siempre esté en %)
-                    let x = parseFloat(element.style.left);
-                    let y = parseFloat(element.style.top);
-                    
-                    // Si no hay unidades (%), asumir que son píxeles y convertirlos a %
-                    if (isNaN(x) || isNaN(y)) {
-                        const fieldRect = fieldContainer.getBoundingClientRect();
-                        const elemRect = element.getBoundingClientRect();
-                        x = ((elemRect.left - fieldRect.left) / fieldRect.width) * 100;
-                        y = ((elemRect.top - fieldRect.top) / fieldRect.height) * 100;
-                    }
-                    
-                    sequences[currentSequence].elements[el.id] = {
-                        startX: x,
-                        startY: y,
-                        endX: x,
-                        endY: y
-                    };
-                }
             });
-        }
-        function restoreSequenceState() {
-            elements.forEach(el => {
-                const element = document.getElementById(el.id);
-                if (element && sequences[currentSequence].elements[el.id]) {
-                    const pos = sequences[currentSequence].elements[el.id];
-                    // Aplicar posición en porcentajes
-                    element.style.left = `${pos.startX}%`;
-                    element.style.top = `${pos.startY}%`;
-                }
-            });
-        }
-    
-            function updateSequenceTabs() {
-            sequenceTabs.innerHTML = '';
-            Object.keys(sequences).forEach(seq => {
-                const tab = document.createElement('div');
-                tab.className = `sequence-tab ${seq == currentSequence ? 'active' : ''}`;
-                tab.textContent = `Secuencia ${seq}`;
-                tab.dataset.sequence = seq;
-                tab.addEventListener('click', () => changeSequence(parseInt(seq)));
-                sequenceTabs.appendChild(tab);
-            });
-        }
-    
-            function updateSequenceLog() {
-            const log = document.getElementById('sequenceLog');
-            log.innerHTML = '';
-            Object.entries(sequences).forEach(([seqNum, sequence]) => {
-                const entry = document.createElement('div');
-                entry.className = `log-entry ${seqNum == currentSequence ? 'current-sequence' : ''}`;
-                const moves = Object.entries(sequence.elements).map(([id, data]) => {
-                    const element = elements.find(el => el.id === id);
-                    const elementType = element ? element.type : 'Elemento eliminado';
-                    return `${elementType}: (${Math.round(data.startX)},${Math.round(data.startY)}) → (${Math.round(data.endX)},${Math.round(data.endY)})`;
-                }).join('<br>');
-                entry.innerHTML = `<strong>Secuencia ${seqNum}:</strong><br>${moves || 'Sin movimientos registrados'}`;
-                log.appendChild(entry);
-            });
-        }
-    
-            //FUNCIONES DE ELEMENTOS Y DRAG AND DROP
-    
-            function createDraggableElement(type, customId = null, color = '#3498db') {
-                const id = customId || `element-${++elementCounter}`;
-                const element = document.createElement('img');
-                element.className = 'element';
-                element.id = id;
-                element.dataset.type = type;
-    
-                // Posición inicial aleatoria en porcentajes
-                const randomX = Math.floor(Math.random() * 80) + 10;
-                const randomY = Math.floor(Math.random() * 80) + 10;
-    
-                element.style.left = `${randomX}%`;
-                element.style.top = `${randomY}%`;
-                element.style.transform = 'translate(-50%, -50%)';
-    
-    
-                // Asignar imagen según tipo y color
-                switch (type) {
-                    case 'ball':
-                        element.src = "Imagenes/pelota.png";
-                        break;
-                    case 'cone':
-                        element.src = "Imagenes/cono.png";
-                        break;
-                    case 'player':
-                        element.src = generatePlayerSVG(color); // Usar el color proporcionado
-                        break;
-                    case 'marker':
-                        element.src = 'data:image/svg+xml;base64,...';
-                        break;
-                }
-    
-                // Eventos táctiles
-                element.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    startDragging(e);
-                }, { passive: false });
-    
-                Object.keys(sequences).forEach(seq => {
-                    sequences[seq].elements[id] = {
-                        startX: randomX,
-                        startY: randomY,
-                        endX: randomX,
-                        endY: randomY
-                    };
-                });
-    
-                elements.push({ id: id, type: type, color: type === 'player' ? color : null });
-                fieldContainer.appendChild(element);
-                return element;
-            }
-    
-            function setupFieldDragEvents() {
-                // Eventos para herramientas (solo arrastre para elementos que no son jugadores)
-                document.querySelectorAll('.tool:not([data-type="player"])').forEach(tool => {
-                    tool.addEventListener('mousedown', (e) => {
-                        e.preventDefault();
-                        createDraggableElement(e.target.dataset.type);
-                    });
-                    tool.addEventListener('touchstart', (e) => {
-                        e.preventDefault();
-                        createDraggableElement(e.target.dataset.type);
-                    }, { passive: false });
-                });
-    
-                // Eventos para el campo
-                fieldContainer.addEventListener('mousedown', startDragging);
-                fieldContainer.addEventListener('touchstart', startDragging, { passive: false });
-                document.addEventListener('mousemove', dragElement);
-                document.addEventListener('touchmove', dragElement, { passive: false });
-                document.addEventListener('mouseup', stopDragging);
-                document.addEventListener('touchend', stopDragging);
-            }
-    
-            function startDragging(e) {
-            e.preventDefault();
-            if (e.target.classList.contains('element') && !isAnimating) {
-                isDragging = true;
-                selectedElement = e.target;
-                selectedElementId = selectedElement.id;
-                const coords = getClientCoordinates(e);
-                const rect = selectedElement.getBoundingClientRect();
-                const fieldRect = fieldContainer.getBoundingClientRect();
-                sequences[currentSequence].elements[selectedElementId] = {
-                    startX: rect.left - fieldRect.left,
-                    startY: rect.top - fieldRect.top,
-                    endX: rect.left - fieldRect.left,
-                    endY: rect.top - fieldRect.top
-                };
-                offsetX = coords.clientX - rect.left;
-                offsetY = coords.clientY - rect.top;
-                selectedElement.style.cursor = 'grabbing';
-            }
-        }
-    
-        function dragElement(e) {
-            if (isDragging && selectedElement) {
+            // Configuración del player tool (añadir al DOMContentLoaded)
+            document.getElementById('playerTool').addEventListener('click', function(e) {
                 e.preventDefault();
-                const fieldRect = fieldContainer.getBoundingClientRect();
-                const coords = getClientCoordinates(e);
-                const trashBin = document.getElementById('trashBin');
-    
-                // Calcular posición en % relativa al campo
-                const newX = ((coords.clientX - fieldRect.left) / fieldRect.width) * 100;
-                const newY = ((coords.clientY - fieldRect.top) / fieldRect.height) * 100;
-    
-                // Limitar al área del campo (0% - 100%)
-                const clampedX = Math.max(0, Math.min(newX, 100));
-                const clampedY = Math.max(0, Math.min(newY, 100));
-    
-                selectedElement.style.left = `${clampedX}%`;
-                selectedElement.style.top = `${clampedY}%`;
-    
-                // Verificar si está sobre el tachito
-                if (checkTrashBin(selectedElement)) {
-                    trashBin.classList.add('active');
-                    selectedElement.classList.add('deleting');
-                } else {
-                    trashBin.classList.remove('active');
-                    selectedElement.classList.remove('deleting');
-                    
-                    // Guardar posición en secuencias (en %)
-                    sequences[currentSequence].elements[selectedElementId] = {
-                        startX: clampedX,
-                        startY: clampedY,
-                        endX: clampedX,
-                        endY: clampedY
-                    };
-                }
-            }
-        }
-    
-        function stopDragging() {
-            if (isDragging) {
-                isDragging = false;
-                const trashBin = document.getElementById('trashBin');
-                
-                if (selectedElement && checkTrashBin(selectedElement)) {
-                    // Eliminar el elemento si se soltó sobre el tachito
-                    deleteElement(selectedElementId);
-                }
-                
-                if (selectedElement) {
-                    selectedElement.style.cursor = 'move';
-                    selectedElement.classList.remove('deleting');
-                }
-                
-                trashBin.classList.remove('active');
-                selectedElement = null;
-                selectedElementId = null;
-            }
-        }
-            function checkTrashBin(element) {
-                const trashBin = document.getElementById('trashBin');
-                const elementRect = element.getBoundingClientRect();
-                const trashRect = trashBin.getBoundingClientRect();
-                
-                // Verificar colisión entre el elemento y el tachito
-                return !(
-                    elementRect.right < trashRect.left || 
-                    elementRect.left > trashRect.right || 
-                    elementRect.bottom < trashRect.top || 
-                    elementRect.top > trashRect.bottom
-                );
-            }
-    
-            function deleteElement(elementId) {
-                // Eliminar el elemento visualmente
-                const element = document.getElementById(elementId);
-                if (element) {
-                    element.classList.add('deleting');
-                    setTimeout(() => element.remove(), 300);
-                }
-        
-                // Eliminar de la lista de elementos
-                elements = elements.filter(el => el.id !== elementId);
-                
-                // Eliminar de todas las secuencias
-                Object.keys(sequences).forEach(seq => {
-                    if (sequences[seq].elements[elementId]) {
-                        delete sequences[seq].elements[elementId];
-                    }
-                });
-                
-                // Actualizar el log
-                updateSequenceLog();
+                document.getElementById('colorPicker').style.display = 'block';
+            });
+
+            document.getElementById('confirmColor').addEventListener('click', function() {
+                const color = document.getElementById('playerColor').value;
+                document.getElementById('colorPicker').style.display = 'none';
+                createDraggableElement('player', null, color);
+            });
+                // Configuración de eventos de arrastre
+                setupFieldDragEvents();
+            });
+            document.getElementById('btnCancelSave').addEventListener('click', function() {
+                // Cerrar el modal de carga
+                document.getElementById('saveModal').style.display = 'none';
+            });
+            fieldContainer = document.getElementById('fieldContainer');
+        //FUNCIONES DE GESTIÓN DE ACTIVIDADES
+        function startNewActivity() {
+        welcomeScreen.style.display = 'none';
+        editorScreen.style.display = 'block';
+        resetEditor();
     }
-    
-            function getClientCoordinates(e) {
-            if (e.touches && e.touches.length > 0) {
-                return { clientX: e.touches[0].clientX, clientY: e.touches[0].clientY };
-            }
-            return { clientX: e.clientX, clientY: e.clientY };
+
+        function showLoadModal() {
+            loadSavedActivities();
+            loadModal.style.display = 'flex';
         }
-    
-            //FUNCIONES DE ANIMACIÓN Y GRABACIÓN
-    
-            async function playAllSequences() {
-                if (isAnimating) return;
-                isAnimating = true;
-                for (const [seqNum, sequence] of Object.entries(sequences)) {
-                    await animateSequence(sequence);
+
+        function showSaveModal() {
+        saveModal.style.display = 'flex';
+    }
+
+        function backToMenu() {
+        if (confirm('¿Estás seguro de volver al menú? Se perderán los cambios no guardados.')) {
+            resetEditor(); // Limpia el editor antes de volver
+            editorScreen.style.display = 'none';
+            welcomeScreen.style.display = 'block';
+        }
+    }
+    function resetEditor() {
+        // Limpiar el campo visualmente, excepto el trash bin
+        const trashBin = document.getElementById('trashBin');
+        fieldContainer.innerHTML = '';
+        if (trashBin) {
+            fieldContainer.appendChild(trashBin);
+        }
+        
+        // Reiniciar variables globales
+        elements = [];
+        elementCounter = 0;
+        currentSequence = 1;
+        sequences = { 
+            1: { 
+                elements: {},
+                name: 'Secuencia 1'
+            } 
+        };
+        
+        // Restablecer la UI
+        sequenceTabs.innerHTML = '<div class="sequence-tab active" data-sequence="1">Secuencia 1</div>';
+        document.getElementById('sequenceLog').innerHTML = '<div class="log-entry current-sequence">Secuencia 1: Edición actual</div>';
+    }
+    //FUNCIONES DE SECUENCIAS
+
+        function addSequence() {
+        const newSequenceNumber = Object.keys(sequences).length + 1;
+        
+        // Guardar el estado actual ANTES de crear la nueva secuencia
+        saveCurrentSequenceState();  // <-- Añadir esta línea
+        
+        sequences[newSequenceNumber] = { elements: {} };
+        currentSequence = newSequenceNumber;
+        
+        // Copiar las posiciones actuales a la nueva secuencia
+        elements.forEach(el => {
+            const element = document.getElementById(el.id);
+            if (element) {
+                sequences[newSequenceNumber].elements[el.id] = {
+                    startX: parseInt(element.style.left) || 0,
+                    startY: parseInt(element.style.top) || 0,
+                    endX: parseInt(element.style.left) || 0,  // Inicialmente igual a startX/Y
+                    endY: parseInt(element.style.top) || 0
+                };
+            }
+        });
+        
+        updateSequenceTabs();
+        updateSequenceLog();
+    }
+
+    function changeSequence(sequenceNumber) {
+        if (isAnimating) return;
+        
+        // Guardar la secuencia actual antes de cambiar
+        saveCurrentSequenceState();
+        
+        // Cambiar a la nueva secuencia
+        currentSequence = parseInt(sequenceNumber);
+        
+        // Restaurar la nueva secuencia
+        restoreSequenceState();
+        
+        // Actualizar la UI
+        updateSequenceTabs();
+        updateSequenceLog();
+    }
+
+    function deleteSequence() {
+        const totalSequences = Object.keys(sequences).length;
+        if (totalSequences === 1) {
+            alert('Debe haber al menos una secuencia');
+            return;
+        }
+        
+        if (confirm(`¿Eliminar la secuencia ${currentSequence}?`)) {
+            // Guardar el número de secuencia a eliminar
+            const sequenceToDelete = currentSequence;
+            
+            // Crear un nuevo objeto de secuencias manteniendo los datos originales
+            const newSequences = {};
+            
+            // Copiar todas las secuencias excepto la que queremos eliminar
+            // manteniendo los datos intactos
+            for (let i = 1; i <= totalSequences; i++) {
+                if (i != sequenceToDelete) {
+                    // Si está antes de la eliminada, conserva su número
+                    if (i < sequenceToDelete) {
+                        newSequences[i] = JSON.parse(JSON.stringify(sequences[i]));
+                    } 
+                    // Si está después de la eliminada, reduce su número en 1
+                    else {
+                        newSequences[i-1] = JSON.parse(JSON.stringify(sequences[i]));
+                    }
                 }
-                isAnimating = false;
+            }
+            
+            sequences = newSequences;
+            
+            // Ajustar la secuencia actual
+            if (sequenceToDelete > Object.keys(sequences).length) {
+                currentSequence = Object.keys(sequences).length; // Ir a la última si eliminamos la última
+            } else {
+                currentSequence = sequenceToDelete <= 1 ? 1 : sequenceToDelete - 1; // Ir a la anterior si es posible
+            }
+            
+            updateSequenceTabs();
+            updateSequenceLog();
+            restoreSequenceState(); // Asegura que la visualización sea correcta
+        }
+    }
+
+    function saveCurrentSequenceState() {
+        sequences[currentSequence].elements = {};
+        elements.forEach(el => {
+            const element = document.getElementById(el.id);
+            if (element) {
+                // Obtener posición en porcentajes (asegurarse que siempre esté en %)
+                let x = parseFloat(element.style.left);
+                let y = parseFloat(element.style.top);
+                
+                // Si no hay unidades (%), asumir que son píxeles y convertirlos a %
+                if (isNaN(x) || isNaN(y)) {
+                    const fieldRect = fieldContainer.getBoundingClientRect();
+                    const elemRect = element.getBoundingClientRect();
+                    x = ((elemRect.left - fieldRect.left) / fieldRect.width) * 100;
+                    y = ((elemRect.top - fieldRect.top) / fieldRect.height) * 100;
+                }
+                
+                sequences[currentSequence].elements[el.id] = {
+                    startX: x,
+                    startY: y,
+                    endX: x,
+                    endY: y
+                };
+            }
+        });
+    }
+    function restoreSequenceState() {
+        elements.forEach(el => {
+            const element = document.getElementById(el.id);
+            if (element && sequences[currentSequence].elements[el.id]) {
+                const pos = sequences[currentSequence].elements[el.id];
+                // Aplicar posición en porcentajes
+                element.style.left = `${pos.startX}%`;
+                element.style.top = `${pos.startY}%`;
+            }
+        });
+    }
+
+        function updateSequenceTabs() {
+        sequenceTabs.innerHTML = '';
+        Object.keys(sequences).forEach(seq => {
+            const tab = document.createElement('div');
+            tab.className = `sequence-tab ${seq == currentSequence ? 'active' : ''}`;
+            tab.textContent = `Secuencia ${seq}`;
+            tab.dataset.sequence = seq;
+            tab.addEventListener('click', () => changeSequence(parseInt(seq)));
+            sequenceTabs.appendChild(tab);
+        });
+    }
+
+        function updateSequenceLog() {
+        const log = document.getElementById('sequenceLog');
+        log.innerHTML = '';
+        Object.entries(sequences).forEach(([seqNum, sequence]) => {
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${seqNum == currentSequence ? 'current-sequence' : ''}`;
+            const moves = Object.entries(sequence.elements).map(([id, data]) => {
+                const element = elements.find(el => el.id === id);
+                const elementType = element ? element.type : 'Elemento eliminado';
+                return `${elementType}: (${Math.round(data.startX)},${Math.round(data.startY)}) → (${Math.round(data.endX)},${Math.round(data.endY)})`;
+            }).join('<br>');
+            entry.innerHTML = `<strong>Secuencia ${seqNum}:</strong><br>${moves || 'Sin movimientos registrados'}`;
+            log.appendChild(entry);
+        });
+    }
+
+        //FUNCIONES DE ELEMENTOS Y DRAG AND DROP
+
+        function createDraggableElement(type, customId = null, color = '#3498db') {
+            const id = customId || `element-${++elementCounter}`;
+            const element = document.createElement('img');
+            element.className = 'element';
+            element.id = id;
+            element.dataset.type = type;
+
+            // Posición inicial aleatoria en porcentajes
+            const randomX = Math.floor(Math.random() * 80) + 10;
+            const randomY = Math.floor(Math.random() * 80) + 10;
+
+            element.style.left = `${randomX}%`;
+            element.style.top = `${randomY}%`;
+            element.style.transform = 'translate(-50%, -50%)';
+
+
+            // Asignar imagen según tipo y color
+            switch (type) {
+                case 'ball':
+                    element.src = "./imagenes/pelota.png";
+                    break;
+                case 'cone':
+                    element.src = "./imagenes/cono.png";
+                    break;
+                case 'player':
+                    element.src = generatePlayerSVG(color); // Usar el color proporcionado
+                    break;
+                case 'marker':
+                    element.src = 'data:image/svg+xml;base64,...';
+                    break;
+            }
+
+            // Eventos táctiles
+            element.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                startDragging(e);
+            }, { passive: false });
+
+            Object.keys(sequences).forEach(seq => {
+                sequences[seq].elements[id] = {
+                    startX: randomX,
+                    startY: randomY,
+                    endX: randomX,
+                    endY: randomY
+                };
+            });
+
+            elements.push({ id: id, type: type, color: type === 'player' ? color : null });
+            fieldContainer.appendChild(element);
+            return element;
+        }
+
+        function setupFieldDragEvents() {
+            // Eventos para herramientas (solo arrastre para elementos que no son jugadores)
+            document.querySelectorAll('.tool:not([data-type="player"])').forEach(tool => {
+                tool.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    createDraggableElement(e.target.dataset.type);
+                });
+                tool.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    createDraggableElement(e.target.dataset.type);
+                }, { passive: false });
+            });
+
+            // Eventos para el campo
+            fieldContainer.addEventListener('mousedown', startDragging);
+            fieldContainer.addEventListener('touchstart', startDragging, { passive: false });
+            document.addEventListener('mousemove', dragElement);
+            document.addEventListener('touchmove', dragElement, { passive: false });
+            document.addEventListener('mouseup', stopDragging);
+            document.addEventListener('touchend', stopDragging);
+        }
+
+        function startDragging(e) {
+        e.preventDefault();
+        if (e.target.classList.contains('element') && !isAnimating) {
+            isDragging = true;
+            selectedElement = e.target;
+            selectedElementId = selectedElement.id;
+            const coords = getClientCoordinates(e);
+            const rect = selectedElement.getBoundingClientRect();
+            const fieldRect = fieldContainer.getBoundingClientRect();
+            sequences[currentSequence].elements[selectedElementId] = {
+                startX: rect.left - fieldRect.left,
+                startY: rect.top - fieldRect.top,
+                endX: rect.left - fieldRect.left,
+                endY: rect.top - fieldRect.top
+            };
+            offsetX = coords.clientX - rect.left;
+            offsetY = coords.clientY - rect.top;
+            selectedElement.style.cursor = 'grabbing';
+        }
+    }
+
+    function dragElement(e) {
+        if (isDragging && selectedElement) {
+            e.preventDefault();
+            const fieldRect = fieldContainer.getBoundingClientRect();
+            const coords = getClientCoordinates(e);
+            const trashBin = document.getElementById('trashBin');
+
+            // Calcular posición en % relativa al campo
+            const newX = ((coords.clientX - fieldRect.left) / fieldRect.width) * 100;
+            const newY = ((coords.clientY - fieldRect.top) / fieldRect.height) * 100;
+
+            // Limitar al área del campo (0% - 100%)
+            const clampedX = Math.max(0, Math.min(newX, 100));
+            const clampedY = Math.max(0, Math.min(newY, 100));
+
+            selectedElement.style.left = `${clampedX}%`;
+            selectedElement.style.top = `${clampedY}%`;
+
+            // Verificar si está sobre el tachito
+            if (checkTrashBin(selectedElement)) {
+                trashBin.classList.add('active');
+                selectedElement.classList.add('deleting');
+            } else {
+                trashBin.classList.remove('active');
+                selectedElement.classList.remove('deleting');
+                
+                // Guardar posición en secuencias (en %)
+                sequences[currentSequence].elements[selectedElementId] = {
+                    startX: clampedX,
+                    startY: clampedY,
+                    endX: clampedX,
+                    endY: clampedY
+                };
+            }
+        }
+    }
+
+    function stopDragging() {
+        if (isDragging) {
+            isDragging = false;
+            const trashBin = document.getElementById('trashBin');
+            
+            if (selectedElement && checkTrashBin(selectedElement)) {
+                // Eliminar el elemento si se soltó sobre el tachito
+                deleteElement(selectedElementId);
+            }
+            
+            if (selectedElement) {
+                selectedElement.style.cursor = 'move';
+                selectedElement.classList.remove('deleting');
+            }
+            
+            trashBin.classList.remove('active');
+            selectedElement = null;
+            selectedElementId = null;
+        }
+    }
+        function checkTrashBin(element) {
+            const trashBin = document.getElementById('trashBin');
+            const elementRect = element.getBoundingClientRect();
+            const trashRect = trashBin.getBoundingClientRect();
+            
+            // Verificar colisión entre el elemento y el tachito
+            return !(
+                elementRect.right < trashRect.left || 
+                elementRect.left > trashRect.right || 
+                elementRect.bottom < trashRect.top || 
+                elementRect.top > trashRect.bottom
+            );
+        }
+
+        function deleteElement(elementId) {
+            // Eliminar el elemento visualmente
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.classList.add('deleting');
+                setTimeout(() => element.remove(), 300);
             }
     
-        async function animateSequence(sequence) {
-            return new Promise(resolve => {
-                const log = document.getElementById('sequenceLog');
-                log.innerHTML = '<div class="log-entry current-sequence">Reproduciendo secuencia...</div>';
-                const originalPositions = new Map();
-                
-                // Guardar posiciones originales en porcentajes
+            // Eliminar de la lista de elementos
+            elements = elements.filter(el => el.id !== elementId);
+            
+            // Eliminar de todas las secuencias
+            Object.keys(sequences).forEach(seq => {
+                if (sequences[seq].elements[elementId]) {
+                    delete sequences[seq].elements[elementId];
+                }
+            });
+            
+            // Actualizar el log
+            updateSequenceLog();
+}
+
+        function getClientCoordinates(e) {
+        if (e.touches && e.touches.length > 0) {
+            return { clientX: e.touches[0].clientX, clientY: e.touches[0].clientY };
+        }
+        return { clientX: e.clientX, clientY: e.clientY };
+    }
+
+        //FUNCIONES DE ANIMACIÓN Y GRABACIÓN
+
+        async function playAllSequences() {
+            if (isAnimating) return;
+            isAnimating = true;
+            for (const [seqNum, sequence] of Object.entries(sequences)) {
+                await animateSequence(sequence);
+            }
+            isAnimating = false;
+        }
+
+    async function animateSequence(sequence) {
+        return new Promise(resolve => {
+            const log = document.getElementById('sequenceLog');
+            log.innerHTML = '<div class="log-entry current-sequence">Reproduciendo secuencia...</div>';
+            const originalPositions = new Map();
+            
+            // Guardar posiciones originales en porcentajes
+            elements.forEach(el => {
+                const element = document.getElementById(el.id);
+                originalPositions.set(el.id, { 
+                    x: element.style.left, 
+                    y: element.style.top 
+                });
+            });
+
+            // Aplicar movimientos usando porcentajes
+            Object.entries(sequence.elements).forEach(([id, movement]) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.style.transition = 'all 1s ease-in-out';
+                    element.style.left = `${movement.endX}%`;
+                    element.style.top = `${movement.endY}%`;
+                }
+            });
+
+            setTimeout(() => {
+                log.innerHTML = Object.entries(sequence.elements).map(([id, movement]) => {
+                    const element = elements.find(el => el.id === id);
+                    return `Elemento ${element?.type || 'desconocido'} movido a (${Math.round(movement.endX)}%, ${Math.round(movement.endY)}%)`;
+                }).join('<br>');
+            }, 500);
+
+            setTimeout(() => {
+                // Restaurar posiciones originales
                 elements.forEach(el => {
                     const element = document.getElementById(el.id);
-                    originalPositions.set(el.id, { 
-                        x: element.style.left, 
-                        y: element.style.top 
-                    });
-                });
-    
-                // Aplicar movimientos usando porcentajes
-                Object.entries(sequence.elements).forEach(([id, movement]) => {
-                    const element = document.getElementById(id);
                     if (element) {
-                        element.style.transition = 'all 1s ease-in-out';
-                        element.style.left = `${movement.endX}%`;
-                        element.style.top = `${movement.endY}%`;
+                        element.style.transition = 'none';
+                        const original = originalPositions.get(el.id);
+                        element.style.left = original.x;
+                        element.style.top = original.y;
                     }
                 });
-    
-                setTimeout(() => {
-                    log.innerHTML = Object.entries(sequence.elements).map(([id, movement]) => {
-                        const element = elements.find(el => el.id === id);
-                        return `Elemento ${element?.type || 'desconocido'} movido a (${Math.round(movement.endX)}%, ${Math.round(movement.endY)}%)`;
-                    }).join('<br>');
-                }, 500);
-    
-                setTimeout(() => {
-                    // Restaurar posiciones originales
-                    elements.forEach(el => {
-                        const element = document.getElementById(el.id);
-                        if (element) {
-                            element.style.transition = 'none';
-                            const original = originalPositions.get(el.id);
-                            element.style.left = original.x;
-                            element.style.top = original.y;
-                        }
-                    });
-                    resolve();
-                }, 1100);
-            });
-        }
-    
-            //FUNCIONES DE IMPORTACIÓN/EXPORTACIÓN
-    
-            function saveAsFile() {
-                // Primero guardamos el estado actual de la secuencia
-                saveCurrentSequenceState();
-    
-                // Preparamos los datos para guardar
-                const activityData = {
-                    name: "Entrenamiento_" + new Date().toISOString().slice(0, 10),
-                    elements: elements.map(el => {
-                        const element = document.getElementById(el.id);
-                        // Obtenemos la posición actual del elemento en el DOM
-                        const x = element ? parseFloat(element.style.left) || 50 : 50;
-                        const y = element ? parseFloat(element.style.top) || 50 : 50;
-                        
-                        return {
-                            id: el.id,
-                            type: el.type,
-                            color: el.color || null,
-                            x: x,
-                            y: y
-                        };
-                    }),
-                    sequences: sequences,
-                    timestamp: Date.now()
-                };
-    
-                // Convertir todas las posiciones a porcentajes antes de guardar
-                Object.keys(activityData.sequences).forEach(seq => {
-                    Object.keys(activityData.sequences[seq].elements).forEach(elId => {
-                        const el = activityData.sequences[seq].elements[elId];
-                        // Asegurar que son números
-                        el.startX = parseFloat(el.startX);
-                        el.startY = parseFloat(el.startY);
-                        el.endX = parseFloat(el.endX);
-                        el.endY = parseFloat(el.endY);
-                    });
+                resolve();
+            }, 1100);
+        });
+    }
+
+        //FUNCIONES DE IMPORTACIÓN/EXPORTACIÓN
+
+        function saveAsFile() {
+            // Primero guardamos el estado actual de la secuencia
+            saveCurrentSequenceState();
+
+            // Preparamos los datos para guardar
+            const activityData = {
+                name: "Entrenamiento_" + new Date().toISOString().slice(0, 10),
+                elements: elements.map(el => {
+                    const element = document.getElementById(el.id);
+                    // Obtenemos la posición actual del elemento en el DOM
+                    const x = element ? parseFloat(element.style.left) || 50 : 50;
+                    const y = element ? parseFloat(element.style.top) || 50 : 50;
+                    
+                    return {
+                        id: el.id,
+                        type: el.type,
+                        color: el.color || null,
+                        x: x,
+                        y: y
+                    };
+                }),
+                sequences: sequences,
+                timestamp: Date.now()
+            };
+
+            // Convertir todas las posiciones a porcentajes antes de guardar
+            Object.keys(activityData.sequences).forEach(seq => {
+                Object.keys(activityData.sequences[seq].elements).forEach(elId => {
+                    const el = activityData.sequences[seq].elements[elId];
+                    // Asegurar que son números
+                    el.startX = parseFloat(el.startX);
+                    el.startY = parseFloat(el.startY);
+                    el.endX = parseFloat(el.endX);
+                    el.endY = parseFloat(el.endY);
                 });
-    
-                // Crear y descargar el archivo
-                const blob = new Blob([JSON.stringify(activityData)], {type: 'application/json'});
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `entrenamiento_${new Date().toISOString().slice(0,10)}.json`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }
-            function loadFromFile(file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        const data = JSON.parse(e.target.result);
-                        loadActivity('Archivo cargado', data);
-                    } catch(error) {
-                        alert('Error al cargar archivo: Formato inválido');
-                    }
-                };
-                reader.readAsText(file);
-            }
-    
-        //FUNCIONES DE IndexedDB
-    
-            function initDB() {
-            return new Promise((resolve, reject) => {
-                
-                const request = indexedDB.open('FootballTrainingDB', 1);
-                request.onupgradeneeded = (event) => {
-                    const db = event.target.result;
-                    if (!db.objectStoreNames.contains('activities')) {
-                        db.createObjectStore('activities', { keyPath: 'name' });
-                    }
-                };
-                request.onsuccess = (event) => resolve(event.target.result);
-                request.onerror = (event) => reject('Error al abrir la base de datos');
             });
+
+            // Crear y descargar el archivo
+            const blob = new Blob([JSON.stringify(activityData)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `entrenamiento_${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
-    
-            function loadSavedActivities() {
-            savedActivitiesList.innerHTML = '';
+        function loadFromFile(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    loadActivity('Archivo cargado', data);
+                } catch(error) {
+                    alert('Error al cargar archivo: Formato inválido');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+    //FUNCIONES DE IndexedDB
+
+        function initDB() {
+        return new Promise((resolve, reject) => {
+            
+            const request = indexedDB.open('FootballTrainingDB', 1);
+            request.onupgradeneeded = (event) => {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains('activities')) {
+                    db.createObjectStore('activities', { keyPath: 'name' });
+                }
+            };
+            request.onsuccess = (event) => resolve(event.target.result);
+            request.onerror = (event) => reject('Error al abrir la base de datos');
+        });
+    }
+
+        function loadSavedActivities() {
+        savedActivitiesList.innerHTML = '';
+        initDB().then(db => {
+            const transaction = db.transaction(['activities'], 'readonly');
+            const store = transaction.objectStore('activities');
+            const request = store.getAll();
+            request.onsuccess = () => {
+                const activities = request.result;
+                if (activities.length === 0) {
+                    savedActivitiesList.innerHTML = '<p>No hay actividades guardadas.</p>';
+                    return;
+                }
+                activities.sort((a, b) => b.timestamp - a.timestamp);
+                activities.forEach(activity => {
+                    const activityItem = document.createElement('div');
+                    activityItem.className = 'activity-item';
+                    activityItem.textContent = activity.name;
+                    activityItem.addEventListener('click', () => {
+                        loadActivity(activity.name, activity);
+                        loadModal.style.display = 'none';
+                    });
+                    savedActivitiesList.appendChild(activityItem);
+                });
+            };
+            request.onerror = (event) => {
+                console.error('Error al cargar actividades:', event.target.error);
+                savedActivitiesList.innerHTML = '<p>Error al cargar actividades guardadas.</p>';
+            };
+        }).catch(error => {
+            console.error('Error en la base de datos:', error);
+            savedActivitiesList.innerHTML = '<p>Error al acceder a la base de datos.</p>';
+        });
+    }
+
+    function deleteActivity(activityName) {
             initDB().then(db => {
-                const transaction = db.transaction(['activities'], 'readonly');
-                const store = transaction.objectStore('activities');
-                const request = store.getAll();
-                request.onsuccess = () => {
-                    const activities = request.result;
-                    if (activities.length === 0) {
-                        savedActivitiesList.innerHTML = '<p>No hay actividades guardadas.</p>';
-                        return;
-                    }
-                    activities.sort((a, b) => b.timestamp - a.timestamp);
-                    activities.forEach(activity => {
-                        const activityItem = document.createElement('div');
-                        activityItem.className = 'activity-item';
-                        activityItem.textContent = activity.name;
-                        activityItem.addEventListener('click', () => {
-                            loadActivity(activity.name, activity);
-                            loadModal.style.display = 'none';
-                        });
-                        savedActivitiesList.appendChild(activityItem);
-                    });
-                };
-                request.onerror = (event) => {
-                    console.error('Error al cargar actividades:', event.target.error);
-                    savedActivitiesList.innerHTML = '<p>Error al cargar actividades guardadas.</p>';
-                };
-            }).catch(error => {
-                console.error('Error en la base de datos:', error);
-                savedActivitiesList.innerHTML = '<p>Error al acceder a la base de datos.</p>';
-            });
-        }
-    
-        function deleteActivity(activityName) {
-                initDB().then(db => {
-                const transaction = db.transaction(['activities'], 'readwrite');
-                const store = transaction.objectStore('activities');
-                const request = store.delete(activityName);
-                request.onsuccess = () => {
-                    alert(`Actividad "${activityName}" eliminada correctamente.`);
-                    loadSavedActivities();
-                };
-                request.onerror = (event) => {
-                    console.error('Error al eliminar actividad:', event.target.error);
-                    alert('Error al eliminar la actividad.');
-                };
-            }).catch(error => {
-                console.error('Error en la base de datos:', error);
-                alert('Error al acceder a la base de datos.');
-            });
-        }
-        function loadActivity(name, data) {
-            try {
-                // Limpiar estado actual
-                resetEditor();
-                
-                // Verificar y normalizar datos cargados
-                if (!data.sequences || typeof data.sequences !== 'object') {
-                    throw new Error("Datos de secuencias inválidos");
-                }
-                
-                // Cargar elementos
-                if (data.elements && Array.isArray(data.elements)) {
-                    data.elements.forEach(el => {
-                        const element = createDraggableElement(el.type, el.id, el.color);
-                        // Posición inicial desde datos o valores por defecto
-                        element.style.left = `${el.x || 50}%`;
-                        element.style.top = `${el.y || 50}%`;
-                    });
-                }
-                
-                // Cargar secuencias (con validación)
-                sequences = {};
-                Object.keys(data.sequences).forEach(seq => {
-                    sequences[seq] = { elements: {} };
-                    Object.keys(data.sequences[seq].elements).forEach(elId => {
-                        const elData = data.sequences[seq].elements[elId];
-                        sequences[seq].elements[elId] = {
-                            startX: parseFloat(elData.startX) || 50,
-                            startY: parseFloat(elData.startY) || 50,
-                            endX: parseFloat(elData.endX) || 50,
-                            endY: parseFloat(elData.endY) || 50
-                        };
-                    });
-                });
-                
-                // Restaurar primera secuencia
-                currentSequence = 1;
-                restoreSequenceState();
-                updateSequenceTabs();
-                updateSequenceLog();
-                
-                // Mostrar editor
-                welcomeScreen.style.display = 'none';
-                editorScreen.style.display = 'block';
-            } catch (error) {
-                console.error("Error al cargar actividad:", error);
-                alert(`Error al cargar la actividad: ${error.message}`);
+            const transaction = db.transaction(['activities'], 'readwrite');
+            const store = transaction.objectStore('activities');
+            const request = store.delete(activityName);
+            request.onsuccess = () => {
+                alert(`Actividad "${activityName}" eliminada correctamente.`);
+                loadSavedActivities();
+            };
+            request.onerror = (event) => {
+                console.error('Error al eliminar actividad:', event.target.error);
+                alert('Error al eliminar la actividad.');
+            };
+        }).catch(error => {
+            console.error('Error en la base de datos:', error);
+            alert('Error al acceder a la base de datos.');
+        });
+    }
+    function loadActivity(name, data) {
+        try {
+            // Limpiar estado actual
+            resetEditor();
+            
+            // Verificar y normalizar datos cargados
+            if (!data.sequences || typeof data.sequences !== 'object') {
+                throw new Error("Datos de secuencias inválidos");
             }
+            
+            // Cargar elementos
+            if (data.elements && Array.isArray(data.elements)) {
+                data.elements.forEach(el => {
+                    const element = createDraggableElement(el.type, el.id, el.color);
+                    // Posición inicial desde datos o valores por defecto
+                    element.style.left = `${el.x || 50}%`;
+                    element.style.top = `${el.y || 50}%`;
+                });
+            }
+            
+            // Cargar secuencias (con validación)
+            sequences = {};
+            Object.keys(data.sequences).forEach(seq => {
+                sequences[seq] = { elements: {} };
+                Object.keys(data.sequences[seq].elements).forEach(elId => {
+                    const elData = data.sequences[seq].elements[elId];
+                    sequences[seq].elements[elId] = {
+                        startX: parseFloat(elData.startX) || 50,
+                        startY: parseFloat(elData.startY) || 50,
+                        endX: parseFloat(elData.endX) || 50,
+                        endY: parseFloat(elData.endY) || 50
+                    };
+                });
+            });
+            
+            // Restaurar primera secuencia
+            currentSequence = 1;
+            restoreSequenceState();
+            updateSequenceTabs();
+            updateSequenceLog();
+            
+            // Mostrar editor
+            welcomeScreen.style.display = 'none';
+            editorScreen.style.display = 'block';
+        } catch (error) {
+            console.error("Error al cargar actividad:", error);
+            alert(`Error al cargar la actividad: ${error.message}`);
         }
-    
-        function generatePlayerSVG(color) {
-            const svg = `
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
-                    <circle cx="25" cy="15" r="10" fill="${color}"/>
-                    <path d="M25 25c-7.5 0-15 3-15 8v12h30V33c0-5-7.5-8-15-8z" fill="${color}"/>
-                </svg>
-            `;
-            return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-        }
-        </script>
-    </body>
+    }
+
+    function generatePlayerSVG(color) {
+        const svg = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+                <circle cx="25" cy="15" r="10" fill="${color}"/>
+                <path d="M25 25c-7.5 0-15 3-15 8v12h30V33c0-5-7.5-8-15-8z" fill="${color}"/>
+            </svg>
+        `;
+        return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+    }
+    </script>
+</body>
 </html>
+    
+    </script>
+</body>
